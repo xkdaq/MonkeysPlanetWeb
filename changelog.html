@@ -1,0 +1,778 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#071d17" />
+    <meta name="description" content="猴哥星球各端更新日志，记录 Web、小程序、Android 与 iOS 每个版本的重大功能更新。" />
+    <link rel="icon" href="/assets/logo.png" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Noto+Sans+SC:wght@400;500;600;700;900&display=swap"
+      rel="stylesheet"
+    />
+    <title>更新日志 - 猴哥星球</title>
+    <style>
+      :root {
+        --green: #08c96b;
+        --green-dark: #039b50;
+        --green-soft: #e8f7ed;
+        --ink: #071d17;
+        --ink-soft: #53645f;
+        --cream: #f6f7f1;
+        --line: rgba(7, 29, 23, 0.12);
+        --yellow: #ffca3a;
+        --blue: #6b9cff;
+        --orange: #ffb65f;
+        --purple: #a882e8;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      html {
+        scroll-behavior: smooth;
+      }
+
+      body {
+        margin: 0;
+        font-family: "Manrope", "Noto Sans SC", sans-serif;
+        color: var(--ink);
+        background: var(--cream);
+      }
+
+      a {
+        color: inherit;
+        text-decoration: none;
+      }
+
+      button {
+        font: inherit;
+        color: inherit;
+      }
+
+      img {
+        display: block;
+        max-width: 100%;
+      }
+
+      /* ===== Header (复用官网) ===== */
+      .site-header {
+        position: fixed;
+        z-index: 100;
+        top: 18px;
+        left: 50%;
+        display: flex;
+        width: min(1180px, calc(100% - 40px));
+        height: 68px;
+        padding: 0 12px 0 16px;
+        align-items: center;
+        justify-content: space-between;
+        border: 1px solid rgba(255, 255, 255, 0.15);
+        border-radius: 22px;
+        background: rgba(7, 29, 23, 0.78);
+        box-shadow: 0 20px 50px rgba(0, 0, 0, 0.14);
+        backdrop-filter: blur(18px);
+        transform: translateX(-50%);
+      }
+
+      .brand {
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        color: white;
+        font-size: 18px;
+        font-weight: 800;
+        letter-spacing: -0.03em;
+      }
+
+      .brand img {
+        width: 40px;
+        height: 40px;
+        border-radius: 12px;
+        object-fit: cover;
+      }
+
+      .site-nav {
+        display: flex;
+        align-items: center;
+        gap: 34px;
+        color: rgba(255, 255, 255, 0.72);
+        font-size: 14px;
+        font-weight: 600;
+      }
+
+      .site-nav a {
+        transition: color 0.2s ease;
+      }
+
+      .site-nav a:hover {
+        color: white;
+      }
+
+      .site-nav .nav-cta {
+        padding: 12px 20px;
+        color: var(--ink);
+        border-radius: 13px;
+        background: var(--green);
+      }
+
+      .menu-toggle {
+        display: none;
+        width: 44px;
+        height: 44px;
+        padding: 12px;
+        border: 0;
+        border-radius: 12px;
+        background: rgba(255, 255, 255, 0.08);
+      }
+
+      .menu-toggle span {
+        display: block;
+        height: 2px;
+        margin: 5px 0;
+        background: white;
+        transition: 0.2s ease;
+      }
+
+      /* ===== Page Hero ===== */
+      .page-hero {
+        position: relative;
+        display: flex;
+        min-height: 420px;
+        padding: 160px max(7vw, 40px) 80px;
+        align-items: center;
+        justify-content: center;
+        overflow: hidden;
+        color: white;
+        text-align: center;
+        background:
+          radial-gradient(circle at 50% 20%, rgba(8, 201, 107, 0.15), transparent 40%),
+          var(--ink);
+      }
+
+      .page-hero::before {
+        position: absolute;
+        inset: 0;
+        content: "";
+        background:
+          linear-gradient(rgba(255, 255, 255, 0.025) 1px, transparent 1px),
+          linear-gradient(90deg, rgba(255, 255, 255, 0.025) 1px, transparent 1px);
+        background-size: 60px 60px;
+        pointer-events: none;
+      }
+
+      .page-hero-inner {
+        position: relative;
+        z-index: 1;
+      }
+
+      .eyebrow {
+        display: flex;
+        margin-bottom: 24px;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+        color: var(--green);
+        font-size: 12px;
+        font-weight: 800;
+        letter-spacing: 0.18em;
+        text-transform: uppercase;
+      }
+
+      .eyebrow span {
+        width: 28px;
+        height: 2px;
+        background: currentColor;
+      }
+
+      .page-hero h1 {
+        margin: 0;
+        font-size: clamp(36px, 4vw, 56px);
+        line-height: 1.15;
+        letter-spacing: -0.055em;
+      }
+
+      .page-hero p {
+        max-width: 540px;
+        margin: 18px auto 0;
+        color: rgba(255, 255, 255, 0.55);
+        font-size: 15px;
+        line-height: 1.8;
+      }
+
+      /* ===== Timeline ===== */
+      .timeline-section {
+        padding: 80px max(7vw, 40px) 120px;
+      }
+
+      .timeline {
+        position: relative;
+        max-width: 880px;
+        margin: 0 auto;
+      }
+
+      .timeline::before {
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        left: 50%;
+        width: 2px;
+        content: "";
+        background: linear-gradient(180deg, transparent, var(--line) 5%, var(--line) 95%, transparent);
+        transform: translateX(-1px);
+      }
+
+      .timeline-item {
+        position: relative;
+        display: grid;
+        margin-bottom: 48px;
+        grid-template-columns: 1fr 1fr;
+        align-items: start;
+        gap: 60px;
+      }
+
+      .timeline-item:nth-child(even) .timeline-content {
+        grid-column: 2;
+      }
+
+      .timeline-item:nth-child(even) .timeline-date-wrap {
+        grid-column: 1;
+        text-align: right;
+      }
+
+      .timeline-dot {
+        position: absolute;
+        top: 20px;
+        left: 50%;
+        width: 14px;
+        height: 14px;
+        content: "";
+        border: 3px solid var(--cream);
+        border-radius: 50%;
+        background: var(--green);
+        box-shadow: 0 0 0 2px var(--green);
+        transform: translateX(-50%);
+      }
+
+      .timeline-content {
+        padding: 28px 32px;
+        border: 1px solid var(--line);
+        border-radius: 24px;
+        background: white;
+        box-shadow: 0 8px 30px rgba(7, 29, 23, 0.04);
+        transition: transform 0.25s ease, box-shadow 0.25s ease;
+      }
+
+      .timeline-content:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 16px 45px rgba(7, 29, 23, 0.08);
+      }
+
+      .timeline-meta {
+        display: flex;
+        margin-bottom: 14px;
+        align-items: center;
+        gap: 10px;
+        flex-wrap: wrap;
+      }
+
+      .platform-tag {
+        display: inline-flex;
+        padding: 5px 12px;
+        align-items: center;
+        border-radius: 99px;
+        font-size: 11px;
+        font-weight: 700;
+        letter-spacing: 0.02em;
+      }
+
+      .platform-web {
+        color: #24724c;
+        background: #dff7e9;
+      }
+
+      .platform-mini {
+        color: #3554a4;
+        background: #e4f0ff;
+      }
+
+      .platform-android {
+        color: #725900;
+        background: #fff2c7;
+      }
+
+      .platform-ios {
+        color: #6246a3;
+        background: #eceaff;
+      }
+
+      .platform-all {
+        color: #087744;
+        background: #e2f8eb;
+      }
+
+      .timeline-date {
+        color: var(--ink-soft);
+        font-size: 12px;
+        font-weight: 600;
+      }
+
+      .timeline-content h3 {
+        margin: 0 0 10px;
+        font-size: 18px;
+        font-weight: 700;
+        letter-spacing: -0.02em;
+        line-height: 1.4;
+      }
+
+      .timeline-content p {
+        margin: 0;
+        color: var(--ink-soft);
+        font-size: 14px;
+        line-height: 1.75;
+      }
+
+      .timeline-content ul {
+        margin: 10px 0 0;
+        padding-left: 18px;
+        color: var(--ink-soft);
+        font-size: 13px;
+        line-height: 1.8;
+      }
+
+      .timeline-content li {
+        margin-bottom: 4px;
+      }
+
+      .timeline-date-wrap {
+        padding-top: 26px;
+        color: var(--ink-soft);
+        font-size: 13px;
+        font-weight: 600;
+      }
+
+      .timeline-date-wrap strong {
+        display: block;
+        margin-bottom: 6px;
+        color: var(--ink);
+        font-size: 22px;
+        font-weight: 800;
+        letter-spacing: -0.04em;
+      }
+
+      .timeline-date-wrap small {
+        color: #9ba6a2;
+        font-size: 11px;
+      }
+
+      /* ===== Reveal Animation ===== */
+      .reveal {
+        opacity: 0;
+        transform: translateY(28px);
+        transition: opacity 0.7s ease, transform 0.7s ease;
+      }
+
+      .reveal.visible {
+        opacity: 1;
+        transform: translateY(0);
+      }
+
+      /* ===== Footer (复用官网) ===== */
+      footer {
+        display: grid;
+        padding: 55px max(7vw, 40px);
+        grid-template-columns: auto 1fr auto;
+        align-items: center;
+        column-gap: 30px;
+        border-top: 1px solid var(--line);
+      }
+
+      .footer-brand {
+        color: var(--ink);
+      }
+
+      footer > p {
+        color: #7b8a85;
+        font-size: 11px;
+      }
+
+      .footer-links {
+        display: flex;
+        gap: 25px;
+        color: #596a64;
+        font-size: 11px;
+        font-weight: 600;
+      }
+
+      .footer-meta {
+        display: flex;
+        margin-top: 26px;
+        grid-column: 1 / -1;
+        align-items: center;
+        flex-direction: column;
+        justify-content: center;
+        gap: 8px;
+        text-align: center;
+        color: #9ba6a2;
+        font-size: 9px;
+      }
+
+      .footer-meta a {
+        transition: color 0.2s ease;
+      }
+
+      .footer-meta a:hover {
+        color: var(--green-dark);
+      }
+
+      /* ===== Responsive ===== */
+      @media (max-width: 860px) {
+        .site-header {
+          top: 10px;
+          width: calc(100% - 20px);
+        }
+
+        .menu-toggle {
+          display: block;
+        }
+
+        .menu-toggle.open span:first-child {
+          transform: translateY(3.5px) rotate(45deg);
+        }
+
+        .menu-toggle.open span:last-child {
+          transform: translateY(-3.5px) rotate(-45deg);
+        }
+
+        .site-nav {
+          position: absolute;
+          top: 76px;
+          right: 0;
+          left: 0;
+          display: grid;
+          padding: 14px;
+          gap: 4px;
+          border: 1px solid rgba(255, 255, 255, 0.12);
+          border-radius: 18px;
+          background: rgba(7, 29, 23, 0.97);
+          box-shadow: 0 25px 50px rgba(0, 0, 0, 0.2);
+          opacity: 0;
+          pointer-events: none;
+          transform: translateY(-8px);
+          transition: 0.2s ease;
+        }
+
+        .site-nav.open {
+          opacity: 1;
+          pointer-events: auto;
+          transform: translateY(0);
+        }
+
+        .site-nav a {
+          padding: 10px 14px;
+          border-radius: 10px;
+          text-align: center;
+          transition: background 0.15s ease;
+        }
+
+        .site-nav a:hover {
+          background: rgba(255, 255, 255, 0.06);
+        }
+
+        .site-nav .nav-cta {
+          margin-top: 4px;
+        }
+
+        .timeline::before {
+          left: 18px;
+        }
+
+        .timeline-item {
+          grid-template-columns: 1fr;
+          gap: 12px;
+          padding-left: 44px;
+        }
+
+        .timeline-item:nth-child(even) .timeline-content,
+        .timeline-item .timeline-content {
+          grid-column: 1;
+        }
+
+        .timeline-item:nth-child(even) .timeline-date-wrap,
+        .timeline-item .timeline-date-wrap {
+          grid-column: 1;
+          text-align: left;
+          padding-top: 0;
+          padding-bottom: 4px;
+        }
+
+        .timeline-dot {
+          left: 18px;
+        }
+
+        .timeline-content {
+          padding: 22px 24px;
+        }
+
+        footer {
+          grid-template-columns: 1fr;
+          justify-items: center;
+          text-align: center;
+          gap: 14px;
+        }
+
+        .footer-links {
+          flex-wrap: wrap;
+          justify-content: center;
+        }
+      }
+
+      @media (max-width: 480px) {
+        .page-hero {
+          min-height: 340px;
+          padding-top: 120px;
+        }
+
+        .timeline-section {
+          padding: 50px 20px 80px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <header class="site-header">
+      <a class="brand" href="/index.html" aria-label="返回首页">
+        <img src="/assets/logo.png" alt="" />
+        <span>猴哥星球</span>
+      </a>
+
+      <button class="menu-toggle" type="button" aria-label="打开导航" aria-expanded="false">
+        <span></span>
+        <span></span>
+      </button>
+
+      <nav class="site-nav" aria-label="主导航">
+        <a href="/index.html#features">产品能力</a>
+        <a href="/index.html#experience">产品体验</a>
+        <a href="/index.html#testimonials">用户口碑</a>
+        <a class="nav-cta" href="/index.html#download">立即体验</a>
+      </nav>
+    </header>
+
+    <main>
+      <section class="page-hero">
+        <div class="page-hero-inner">
+          <div class="eyebrow"><span></span> Changelog</div>
+          <h1>每一次更新，<br />都是一次更好的遇见。</h1>
+          <p>记录 Web、小程序、Android 与 iOS 每个版本的重大功能更新。我们持续迭代，只为给你更专注的学习体验。</p>
+        </div>
+      </section>
+
+      <section class="timeline-section">
+        <div class="timeline">
+          <article class="timeline-item reveal">
+            <div class="timeline-dot"></div>
+            <div class="timeline-date-wrap">
+              <strong>2026.06.17</strong>
+              <small>星期三</small>
+            </div>
+            <div class="timeline-content">
+              <div class="timeline-meta">
+                <span class="platform-tag platform-web">Web版</span>
+                <span class="timeline-date">2026-06-17</span>
+              </div>
+              <h3>笔记画笔功能上线</h3>
+              <p>Web 端题库学习页面新增笔记画笔功能，支持在题目区域自由标注、圈画重点，让在线刷题也能像在纸上一样做笔记。</p>
+            </div>
+          </article>
+
+          <article class="timeline-item reveal">
+            <div class="timeline-dot"></div>
+            <div class="timeline-date-wrap">
+              <strong>2026.06.17</strong>
+              <small>星期三</small>
+            </div>
+            <div class="timeline-content">
+              <div class="timeline-meta">
+                <span class="platform-tag platform-web">Web版</span>
+                <span class="platform-tag platform-mini">小程序版</span>
+                <span class="timeline-date">2026-06-17</span>
+              </div>
+              <h3>笔记模块支持外部链接</h3>
+              <p>笔记功能全面升级为支持内部笔记和外部链接两种形式。后台可配置外链笔记，点击直接跳转外部资源，资料获取更灵活。</p>
+              <ul>
+                <li>H5 合并「四六级」tab，底部导航简化为「资料」与「笔记」</li>
+                <li>外链笔记以绿色左边框 + 外链图标标识</li>
+                <li>后台新增/编辑支持切换「内部笔记 / 外部链接」</li>
+              </ul>
+            </div>
+          </article>
+
+          <article class="timeline-item reveal">
+            <div class="timeline-dot"></div>
+            <div class="timeline-date-wrap">
+              <strong>2026.05.07</strong>
+              <small>星期四</small>
+            </div>
+            <div class="timeline-content">
+              <div class="timeline-meta">
+                <span class="platform-tag platform-all">全端</span>
+                <span class="timeline-date">2026-05-07</span>
+              </div>
+              <h3>资料页面改版 & 网盘资料独立表</h3>
+              <p>资料模块从文章中彻底剥离，独立成「网盘资料」表，分类筛选、卡片网格展示，资源获取更直观。</p>
+              <ul>
+                <li>资料页面改版：顶部分类标签栏 + 双列卡片网格布局</li>
+                <li>后台新增「资料管理」独立菜单</li>
+                <li>数据传输加密，保障资源安全</li>
+              </ul>
+            </div>
+          </article>
+
+          <article class="timeline-item reveal">
+            <div class="timeline-dot"></div>
+            <div class="timeline-date-wrap">
+              <strong>2026.03.26</strong>
+              <small>星期四</small>
+            </div>
+            <div class="timeline-content">
+              <div class="timeline-meta">
+                <span class="platform-tag platform-mini">小程序版</span>
+                <span class="platform-tag platform-android">Android版</span>
+                <span class="platform-tag platform-web">Web版</span>
+                <span class="timeline-date">2026-03-26</span>
+              </div>
+              <h3>问题反馈、短信接入与隐私合规</h3>
+              <p>全端上线问题反馈通道，接入 Spug 短信服务，同时将隐私政策和用户协议改为原生页面。</p>
+              <ul>
+                <li>问题反馈：前后端全套（提交 / 列表 / 处理）</li>
+                <li>Spug 短信接入：绑定手机号、修改密码功能上线</li>
+                <li>隐私政策 / 用户协议改为小程序原生页面</li>
+                <li>内存缓存替代 Redis，验证码用 MemoryCacheUtil</li>
+              </ul>
+            </div>
+          </article>
+
+          <article class="timeline-item reveal">
+            <div class="timeline-dot"></div>
+            <div class="timeline-date-wrap">
+              <strong>2026.03.25</strong>
+              <small>星期三</small>
+            </div>
+            <div class="timeline-content">
+              <div class="timeline-meta">
+                <span class="platform-tag platform-mini">小程序版</span>
+                <span class="timeline-date">2026-03-25</span>
+              </div>
+              <h3>接口安全加固 & 刷题体验优化</h3>
+              <p>小程序刷题相关接口全面升级安全策略，接入请求签名验证与响应加密传输，同时修复排序与进度保存问题。</p>
+              <ul>
+                <li>接口请求接入签名验证，防止重放攻击</li>
+                <li>响应数据 AES 加密传输，保障内容安全</li>
+                <li>刷题进度保存：本地存储实现进度保存与恢复</li>
+                <li>题目顺序修复：SQL 排序改为 id 升序</li>
+              </ul>
+            </div>
+          </article>
+
+          <article class="timeline-item reveal">
+            <div class="timeline-dot"></div>
+            <div class="timeline-date-wrap">
+              <strong>2026.03.24</strong>
+              <small>星期二</small>
+            </div>
+            <div class="timeline-content">
+              <div class="timeline-meta">
+                <span class="platform-tag platform-all">全端</span>
+                <span class="timeline-date">2026-03-24</span>
+              </div>
+              <h3>多题库改造与错题/收藏重构</h3>
+              <p>核心题库系统完成多题库架构改造，错题本和收藏夹均按章节分类分组，练习模式全面修复。</p>
+              <ul>
+                <li>支持多题库、分类、题目管理</li>
+                <li>错题本按章节分类展示</li>
+                <li>收藏夹按章节分类展示</li>
+                <li>修复顺序 / 随机 / 错题 / 收藏四种练习模式</li>
+              </ul>
+            </div>
+          </article>
+
+          <article class="timeline-item reveal">
+            <div class="timeline-dot"></div>
+            <div class="timeline-date-wrap">
+              <strong>2026.01</strong>
+              <small>上线</small>
+            </div>
+            <div class="timeline-content">
+              <div class="timeline-meta">
+                <span class="platform-tag platform-web">Web版</span>
+                <span class="platform-tag platform-mini">小程序版</span>
+                <span class="platform-tag platform-android">Android版</span>
+                <span class="timeline-date">2026-01</span>
+              </div>
+              <h3>猴哥星球正式上线</h3>
+              <p>Web 学习端、微信小程序与 Android 客户端同步上线，提供学习资料、精选题库、错题收藏与学习记录一站式学习体验。</p>
+            </div>
+          </article>
+        </div>
+      </section>
+    </main>
+
+    <footer>
+      <a class="brand footer-brand" href="/index.html">
+        <img src="/assets/logo.png" alt="" />
+        <span>猴哥星球</span>
+      </a>
+      <p>让每一次学习都有方向。</p>
+      <div class="footer-links">
+        <a href="/index.html#features">产品能力</a>
+        <a href="/index.html#download">下载应用</a>
+        <a href="/changelog.html">更新日志</a>
+        <a href="/agreement.html">用户协议</a>
+        <a href="/privacy.html">隐私政策</a>
+      </div>
+      <div class="footer-meta">
+        <span>© 2026 猴哥星球. All rights reserved.</span>
+        <a href="https://beian.miit.gov.cn/" target="_blank" rel="noopener noreferrer">
+          鄂ICP备2024066684号-4
+        </a>
+      </div>
+    </footer>
+
+    <script>
+      const menuToggle = document.querySelector('.menu-toggle')
+      const siteNav = document.querySelector('.site-nav')
+
+      menuToggle.addEventListener('click', () => {
+        const isOpen = siteNav.classList.toggle('open')
+        menuToggle.classList.toggle('open', isOpen)
+        menuToggle.setAttribute('aria-expanded', String(isOpen))
+      })
+
+      document.querySelectorAll('.site-nav a').forEach((link) => {
+        link.addEventListener('click', () => {
+          siteNav.classList.remove('open')
+          menuToggle.classList.remove('open')
+          menuToggle.setAttribute('aria-expanded', 'false')
+        })
+      })
+
+      const revealObserver = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              entry.target.classList.add('visible')
+              revealObserver.unobserve(entry.target)
+            }
+          })
+        },
+        { threshold: 0.14 }
+      )
+
+      document.querySelectorAll('.reveal').forEach((element) => revealObserver.observe(element))
+    </script>
+  </body>
+</html>
